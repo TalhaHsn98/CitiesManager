@@ -10,9 +10,7 @@ using CitiesManager.Web.Models;
 
 namespace CitiesManager.Web.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CitiesController : ControllerBase
+    public class CitiesController : CustomControllerBase
     {
         private readonly ApplicationDbContext _context;
 
@@ -21,6 +19,11 @@ namespace CitiesManager.Web.Controllers
             _context = context;
         }
 
+
+        /// <summary>
+        /// To Get Cities all the cities
+        /// </summary>
+        /// <returns></returns>
         // GET: api/Cities
         [HttpGet]
         public async Task<ActionResult<IEnumerable<City>>> GetCities()
@@ -52,8 +55,10 @@ namespace CitiesManager.Web.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(city).State = EntityState.Modified;
+            var existingcity = await _context.Cities.FindAsync(id);
+            if (existingcity == null) { return NotFound(); }
 
+            existingcity.CityName = city.CityName;
             try
             {
                 await _context.SaveChangesAsync();

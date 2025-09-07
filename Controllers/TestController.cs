@@ -3,9 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CitiesManager.Web.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class TestController : ControllerBase
+    
+    public class TestController : CustomControllerBase
     {
         [HttpGet]
         public string Get()
